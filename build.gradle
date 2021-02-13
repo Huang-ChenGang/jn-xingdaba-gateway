@@ -9,25 +9,34 @@ version = '2020.12.0-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    maven {
+        url "http://118.25.184.76:8081/nexus/content/groups/oobusGroup/"
+        credentials {
+            username NexusUser
+            password NexusPwd
+        }
+    }
 }
 
 ext {
     set('springCloudVersion', "Hoxton.SR9")
 }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
-}
-
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 }
 
